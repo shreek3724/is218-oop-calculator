@@ -61,6 +61,23 @@ def test_invalid_second_number_recovers(monkeypatch, capsys):
     assert "No calculations in history." in output
     assert "Result: 5" in output
 
+# appended CLI tests from checkpoint 5B
+def test_invalid_removal_number_preserves_history(monkeypatch, capsys):
+    # Familiar loops exercise several boundary inputs without new test syntax.
+    for invalid_number in ["0", "-1", "99"]:
+        output = session(monkeypatch, capsys,
+                         ["add", "1", "2", "remove", invalid_number, "history", "exit"])
+        assert "Calculation does not exist." in output, invalid_number
+        assert output.count("1. Add: 1, 2 = 3") == 2, invalid_number
+
+
+def test_invalid_removal_text_preserves_history(monkeypatch, capsys):
+    for invalid_text in ["hello", "1.5"]:
+        output = session(monkeypatch, capsys,
+                         ["add", "1", "2", "remove", invalid_text, "history", "exit"])
+        assert "Please enter a whole calculation number." in output, invalid_text
+        assert output.count("1. Add: 1, 2 = 3") == 2, invalid_text
+
 # old cli test code below:
 
 '''

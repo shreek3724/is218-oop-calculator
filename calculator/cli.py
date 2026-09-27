@@ -53,13 +53,19 @@ def run() -> None:
             print(f"Result: {calculation.get_result():g}")
         elif command == "history":
             show_history(history)
+        # changed the remove block during checkpoint 5B
         elif command == "remove":
             show_history(history)
             if history.get_history():
-                number = int(input("Enter calculation number to remove: "))
-                # People count from 1; Python indexes start at 0.
-                removed = history.remove(number - 1)
-                print(f"Removed: {describe(removed)}")
+                try:
+                    number = int(input("Enter calculation number to remove: "))
+                    removed = history.remove(number - 1)
+                except ValueError:
+                    print("Please enter a whole calculation number.")
+                except IndexError:
+                    print("Calculation does not exist.")
+                else:
+                    print(f"Removed: {describe(removed)}")
         elif command == "help":
             print(HELP)
         else:
